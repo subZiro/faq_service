@@ -16,8 +16,7 @@ Frequently asked Questions service. FastApi-RESTPlus, Swagger UI doc, MongoDB.
 + установить необходимые зависимости:
     pip3 install -r requirements.txt
 + задать переменные окружения
-    FASTAPI_ENV=development
-    DEV_DATABASE_URL='ваш адрес mongodb'
+    DATABASE_URL='ваш адрес mongodb'
 + запустить приложение:
     1. sh ./sh/boot.sh
     2. python3 main.py
