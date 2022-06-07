@@ -9,7 +9,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app import logger
-from config.config import config, Config
+from config import Config
 
 
 logger = logger.getChild('common')
@@ -35,20 +35,6 @@ def now_dt():
     return datetime.now().strftime(Config.DT_TMPL)
 
 
-def get_config(conf_name: str) -> ClassVar:
-    """
-    Получение настроек приложения.
-
-    :return: ClassVar: класс конфигурации
-    """
-    # conf_name = os.getenv('FASTAPI_CONFIG', 'default')
-
-    if conf_name == 'default':
-        logger.warning('Не найден конфигурационный файл.')
-    logger.debug(f'Выполнена загрузка [{conf_name}] конфигурации')
-    return config[conf_name]
-
-
 def create_application(conf_name: str) -> tuple:
     """
     Создание приложения.
@@ -57,7 +43,7 @@ def create_application(conf_name: str) -> tuple:
     :return app, config: tuple(FastApi, ClassVar):
     """
 
-    app_conf = get_config(conf_name)
+    app_conf = Config
     app = FastAPI(title=f'FAQ for SNEG Aqualife. {app_conf.ENV} stage',
                   description='backend FastAPI, database MongoDB',
                   version=app_conf.VERSION,

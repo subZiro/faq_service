@@ -2,9 +2,6 @@
 Авторизация к API
 """
 
-# from jose import jwt
-# from jose.exceptions import JOSEError
-
 from fastapi import Depends
 from fastapi.security import HTTPBasicCredentials, HTTPBearer
 
