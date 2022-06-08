@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+
+  faq_mongodb:
+    container_name: faq_mongodb
+    image: faq_mongodb
+    build:
+      context: ./
+      dockerfile: ./Dockerfiles/mongodb/Dockerfile
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${DB_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${DB_PASSWORD}
+      - MONGO_INITDB_DATABASE=${DB_NAME}
+    ports:
+      - 27017:27017
+    volumes:
+      - volume_db:/data/db
+    networks:
+      - network
+
+  faq_fastapi:
+    container_name: faq_fastapi
+    image: faq_fastapi
+    build:
+      context: ./
+      dockerfile: ./Dockerfiles/fastapi/Dockerfile
+    restart: always
+    depends_on:
+      - faq_mongodb
+    environment:
+      - API_TOKEN=${API_TOKEN}
+      - DB_NAME=${DB_NAME}
+      - DEV_DATABASE_URL=mongodb://${DB_USER}:${DB_PASSWORD}@faq_mongodb:27017
+    command: sh -c "./sh/boot.sh"
+    ports:
+      - 5000:5000
+    networks:
+      - network
+
+volumes:
+  volume_db:
+
+networks:
+  network:
